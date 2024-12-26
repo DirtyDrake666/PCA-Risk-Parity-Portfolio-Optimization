@@ -10,14 +10,14 @@ np.set_printoptions(precision=4, suppress=True)
 ##############Part1.用于模型的数据###############
 
 # 用日对数收益率计算
-df = pd.read_csv('../原始数据/daily_ln_index_yield.csv', index_col='time')  # 将日期作为index
-df1 = pd.read_csv('../原始数据/daily_ln_index_yield.csv')
+df = pd.read_csv('data/daily_ln_index_yield.csv', index_col='time')  # 将日期作为index
+df1 = pd.read_csv('data/daily_ln_index_yield.csv')
 # 用日收盘价计算
-df_closing = pd.read_csv('../原始数据/daily_closing_price.csv', index_col='time')  # 将日期作为index
-df = pd.read_excel('../原始数据/daily_ln_index_yield.xlsx',index_col = 'time') #将日期作为index
-df1 = pd.read_excel('../原始数据/daily_ln_index_yield.xlsx')
+df_closing = pd.read_csv('data/daily_closing_price.csv', index_col='time')  # 将日期作为index
+df = pd.read_excel('data/daily_ln_index_yield.xlsx',index_col = 'time') #将日期作为index
+df1 = pd.read_excel('data/daily_ln_index_yield.xlsx')
 #用日收盘价计算
-df_closing = pd.read_excel('../原始数据/daily_closing_price.xlsx',index_col = 'time') #将日期作为index
+df_closing = pd.read_excel('data/daily_closing_price.xlsx',index_col = 'time') #将日期作为index
 
 # 新增季度序列，按季度进行groupby
 df1['Qtr'] = pd.PeriodIndex(pd.to_datetime(df1['time']), freq='Q')  # 生成季度序列
@@ -107,6 +107,7 @@ def single_target(weights):
     else:
         return risk_budget_objective(weights) - 19.1 * math.log(-1 + math.exp(ratio))
         #return risk_budget_objective(weights) - 19.1 * math.log(ratio)
+        #Here are two types of function used to combine the risk, you can choose one, and modify the parameter 19.1
 # 不求解主成分分析的最优投资权重，而直接求解原模型的最优投资权重
 
 ###############Part4.滚动窗口计算最优权重####################
@@ -234,10 +235,10 @@ df_closing = df_closing.iloc[244:, :]  # 去掉基期的数据
 df_closing['sum_p'] = df_closing.sum(axis=1)  # 求组合的日收盘价
 
 ####导出csv文件
-df_pcarp_weights.to_csv('../自己跑的/主成分风险平价模型_每期最优权重.csv')
-df_pcarp_index.to_csv('../自己跑的/主成分风险平价模型_每期风险收益指标.csv')
-df_pcarp_eigenvalue.to_csv('../自己跑的/主成分风险平价模型_每期主成分特征值.csv')
-df_closing.to_csv('../自己跑的/主成分风险平价模型_日收盘价.csv')
+df_pcarp_weights.to_csv('result/主成分风险平价模型_每期最优权重.csv')
+df_pcarp_index.to_csv('result/主成分风险平价模型_每期风险收益指标.csv')
+df_pcarp_eigenvalue.to_csv('result/主成分风险平价模型_每期主成分特征值.csv')
+df_closing.to_csv('result/主成分风险平价模型_日收盘价.csv')
 
 mean_returns = df_pcarp_index['pcarp_port_returns'].mean()
 mean_volatility = df_pcarp_index['pcarp_port_volatility'].mean()
